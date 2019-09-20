@@ -1,0 +1,223 @@
+doctype html
+html
+  head
+    title Semester
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1, user-scalable=no")
+    link(rel="stylesheet" href="/assets/css/main.css")
+    noscript
+      link(rel="stylesheet" href="/assets/css/noscript.css")
+  style.
+    .gallery {
+        display : flex;
+        flex-wrap:wrap;
+        justify-content: center;
+        margin-bottom: 50px;
+    }
+
+    .arr {
+      display: inline;
+    }
+
+    input#img {
+      margin: 10px auto;
+    }
+
+    input#submitting {
+      margin-left: 10px;
+    }
+
+    footer {
+      text-align: center;
+    }
+
+    .main-img {
+      width: 370px;
+      height: 300px;
+      display: inline-block;
+      margin: 15px;
+    }
+
+    #img_content_box{
+      margin: 0 auto;
+      margin-bottom: 30px;
+      margin-top: 30px;
+      width: 60%;
+    }
+
+    #img_con{ 
+      width: 100%;
+      height: 150px;
+    }
+
+    #showNick {
+        margin-right: 20px;
+    }
+   
+    .major > h2 {
+        font-weight: bold;
+        text-align: center;
+    }
+
+    h2 {
+      text-align: center;
+      padding-bottom: 50px;
+    }
+    
+    img {
+      width: 100%;
+      height:100%;
+      transition: all ease 0.2s;
+      border-radius: 10%;
+      border: inherit;
+    }
+
+    img:hover {
+      transform: scale(1.08);
+    }
+
+    hr {
+      border: solid 1px;
+    }
+
+    h3 {
+      text-align: start;
+      margin-top: 20px;
+    }
+
+    #editText {
+      text-align: start;
+      margin-bottom: 10px;
+    }
+
+    #edit1 {
+      margin-right: 10px;
+    }
+    #img_infile{
+      display : none;
+    }
+    #img_label {
+      border: solid 1px gray;
+      border-radius: 4px;
+      width : 100px;
+      height : 52px;
+      line-height : 50px;
+      text-align : center;
+      margin-top: 10px;
+      font-size: 16px;
+      display: inline-block;
+    }
+
+    #img_label:hover {
+      cursor: pointer;
+      -moz-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+      -webkit-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+      -ms-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+      transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+      border-bottom: dotted 1px;
+      color: #e44c65;
+      text-decoration: none;
+    }
+    .inputImg {
+      text-align: start;
+    }
+
+    #identify_user{
+      display: none;
+    }
+    #nav {
+      font-weight: bold;
+    }
+  body.is-preload
+    #page-wrapper
+      header#header
+        h1#logo
+          a(href="/") Team 2
+        nav#nav
+          ul
+            li
+              a(href="/") Home
+            li
+              a(href="/semester") Semester
+            li
+              a(href="/group_member") Members
+            li
+              a(href="/QnA") Q & A
+            if !user
+              li
+                a.button.primary(href="/login") Login
+              li
+                a.button.primary(href="/register") Register
+            else
+              li
+                a#showNick.button.primary= "안녕하세요, " + user.u_nickName + "님!"
+                a.button.primary(href='/logout') Logout
+      #main.wrapper.style1
+        .container
+          header.major
+            h2 Local Semester
+            p 일본 현지 학기제에서의 사진을 열람하여 정보를 알아가세요   
+          section
+          div#wrap_local_semester
+            div#lcl_intro
+              h2 Intro
+              p 일본생활 적응력 향상 및 취업률 제고를 위한 일본현지학기제 운영
+              p 2010년부터 일본 IT기업 주문반 학생들을 대상으로 일본 현지에서 현지학기제 운영(2013년 현재 제4차 일본 현지학기제 실시 중)
+              p 2011년 현지학기제: 참여자 30명, 4주간 실시
+              p 2012년 현지학기제: 참여자 38명, 6주간 실시
+              p 2013년 현지학기제: 참여자 34명, 6주간 실시
+              p 2014년 현지학기제: 참여자 34명, 6주간 실시
+              p 2015년 현지학기제: 참여자 38명, 6주간 실시
+              p 일본현지에서 일본어교육과 일본문화 탐방, 일본기업 견학 실시
+              hr
+          if user  && user.u_nickName =='관리자'
+            input#identify_user(type='text' value= user.u_nickName)
+            form#wrap_gallery(action='/semester/img' method='post' enctype='multipart/form-data')
+              //- enctype은 인코딩타입 설정 이미지 처리를 위해 이것과 181번째줄에 input type을 file로 해줌.
+              h2 Gallery
+              div
+              .inputImg
+                textarea#img_con(name="content", cols="30", rows="10" maxlength = 100 placeholder="사진의 내용을 입력해주세요")
+                label#img_label 사진 선택
+                  input#img_infile(type='file' name='userfile')
+                input#submitting(type='submit')
+                hr
+        .gallery    
+          for arr in gallery
+              .main-img
+                img#image(src=arr.img onclick='imgClick('+arr.id+')')
+        #img_content_box
+      footer#footer
+          ul.icons
+            li
+              a.icon.alt.fa-twitter(href="#")
+                span.label Twitter
+            li
+              a.icon.alt.fa-facebook(href="#")
+                span.label Facebook
+            li
+              a.icon.alt.fa-linkedin(href="#")
+                span.label LinkedIn
+            li
+              a.icon.alt.fa-instagram(href="#")
+                span.label Instagram
+            li
+              a.icon.alt.fa-github(href="#")
+                span.label GitHub
+            li
+              a.icon.alt.fa-envelope(href="#")
+                span.label Email
+          ul.copyright
+            li Copyright@Team2
+            li
+              | Design: 
+              a(href="http://html5up.net") HTML5 UP
+    script(src="assets/js/jquery.min.js")
+    script(src="assets/js/jquery.scrolly.min.js")
+    script(src="assets/js/jquery.dropotron.min.js")
+    script(src="assets/js/jquery.scrollex.min.js")
+    script(src="assets/js/browser.min.js")
+    script(src="assets/js/breakpoints.min.js")
+    script(src="assets/js/util.js")
+    script(src="assets/js/main.js")
+    script(src='/javascripts/semester.js')
